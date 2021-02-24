@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Home Page</h2>
+<p align="center">Welcome back, {{ username }}!</p>
+
+<h2>Let's try our <a href="{{ url_for('check') }}"></i>Spam Checker</a></h2>
+
+
+{% endblock %}
+

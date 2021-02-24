@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+<div class="content" align="center" style= "background-color:#5b6574;">
+	{% block content %}
+		<div align="center">
+			<p>Machine Learning Application for Classifying Spam & Non-Spam Messages</p>
+		</div>
+		<div align="center"> 
+		<p>Spam Detection for Input Message</p>
+		<p><b>Results for Input Message</b></p>
+		</div>
+		<p>The message was " {{ comment }} "</p>
+    	
+		<div class="results">
+			{% if prediction == 1%}
+			<h2 style="color:red; text-align: center;">Spam</h2>
+			{% elif prediction == 0%}
+			<h2 style="color:blue; text-align: center;">Not Spam</h2>
+			{% endif %}
+		</div>
+
+		<h2 align="center">Back to <a href="{{ url_for('check') }}"></i>Spam Checker</a>
+	{% endblock %}
+</div>
