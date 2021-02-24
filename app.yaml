@@ -1,0 +1,7 @@
+runtime: python39
+
+env_variables:
+  CLOUD_SQL_USERNAME: root
+  CLOUD_SQL_PASSWORD: 
+  CLOUD_SQL_DATABASE_NAME: pythonlogin
+  CLOUD_SQL_CONNECTION_NAME: enhanced-skill-303607:asia-southeast1:spamchecker
