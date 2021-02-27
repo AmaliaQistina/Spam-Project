@@ -19,50 +19,13 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-# Google cloud sql
-PASSWORD = ""
-PUBLIC_IP_ADDRESS = "35.187.250.76"
-DBNAME = "pythonlogin"
-PROJECT_ID = "spam-checker-fyp-1120"
-INSTANCE_NAME = "spam-checker"
-CONNECTION_NAME = "spam-checker-fyp-1120:asia-southeast1:spam-checker"
-
-db_user = os.environ.get('root')
-db_password = os.environ.get('')
-db_name = os.environ.get('pythonlogin')
-db_connection_name = os.environ.get('spam-checker-fyp-1120:asia-southeast1:spam-checker')
-
-SECRET_KEY = 'spamfilter'
-DATA_BACKEND = 'cloudsql'
-PROJECT_ID = 'spam-checker-fyp-1120'
-CLOUDSQL_USER = 'root'
-CLOUDSQL_PASSWORD = ''
-CLOUDSQL_DATABASE = 'pythonlogin'
-CLOUDSQL_CONNECTION_NAME = 'spam-checker-fyp-1120:asia-southeast1:spam-checker'
-
-LOCAL_SQLALCHEMY_DATABASE_URI = (
-	'mysql+pymysql://{user}:{password}@localhost/{database}').format(
-		user=CLOUDSQL_USER, password=CLOUDSQL_PASSWORD, database=CLOUDSQL_DATABASE)
-
-LIVE_SQLALCHEMY_DATABASE_URI = (
-	'mysql+pymysql://{user}:{password}@localhost/{database}'
-	'?unix_socket=/cloudsql/{connection_name}').format(
-		user=CLOUDSQL_USER, password=CLOUDSQL_PASSWORD, database=CLOUDSQL_DATABASE, connection_name=CLOUDSQL_CONNECTION_NAME)	
-
-if os.environ.get('GAE_APPENGINE_HOSTNAME'):
-	SQLALCHEMY_DATABASE_URI = LIVE_SQLALCHEMY_DATABASE_URI
-else:
-	SQLALCHEMY_DATABASE_URI = LIVE_SQLALCHEMY_DATABASE_URI
-
-# for login
-app.secret_key = 'spamfilter'
-
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'pythonlogin'
-app.config['MYSQL_CURSORCLASS'] = "DictCursor"
-
+MYSQL_UNIX_SOCKET: '/cloudsql/spam-checker-fyp-1120:asia-southeast1:spam-checker'
+MYSQL_USER: 'root'
+MYSQL_PASSWORD: ''
+MYSQL_DB: 'pythonlogin'
+MYSQL_CURSORCLASS: 'DictCursor'
+MYSQL_HOST: '35.187.233.82'
+	
 mysql = MySQL(app)
 
 # http://localhost:5000/pythonlogin/
