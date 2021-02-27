@@ -11,9 +11,6 @@ from http.client import IncompleteRead
 import os
 from importlib import reload
 import MySQLdb
-from getpass import getpass
-from mysql.connector import connect, Error
-
 
 app = Flask(__name__)
 
@@ -26,22 +23,22 @@ def index():
 PASSWORD = ""
 PUBLIC_IP_ADDRESS = "35.187.250.76"
 DBNAME = "pythonlogin"
-PROJECT_ID = "spamchecker"
-INSTANCE_NAME = "spam-checker-project"
-CONNECTION_NAME = "spamchecker:asia-southeast1:spam-checker-project"
+PROJECT_ID = "spam-checker-fyp-1120"
+INSTANCE_NAME = "spam-checker"
+CONNECTION_NAME = "spam-checker-fyp-1120:asia-southeast1:spam-checker"
 
 db_user = os.environ.get('root')
 db_password = os.environ.get('')
 db_name = os.environ.get('pythonlogin')
-db_connection_name = os.environ.get('spamchecker:asia-southeast1:spam-checker-project')
+db_connection_name = os.environ.get('spam-checker-fyp-1120:asia-southeast1:spam-checker')
 
 SECRET_KEY = 'spamfilter'
 DATA_BACKEND = 'cloudsql'
-PROJECT_ID = 'spamchecker'
+PROJECT_ID = 'spam-checker-fyp-1120'
 CLOUDSQL_USER = 'root'
 CLOUDSQL_PASSWORD = ''
 CLOUDSQL_DATABASE = 'pythonlogin'
-CLOUDSQL_CONNECTION_NAME = 'spamchecker:asia-southeast1:spam-checker-project'
+CLOUDSQL_CONNECTION_NAME = 'spam-checker-fyp-1120:asia-southeast1:spam-checker'
 
 LOCAL_SQLALCHEMY_DATABASE_URI = (
 	'mysql+pymysql://{user}:{password}@localhost/{database}').format(
