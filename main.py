@@ -35,7 +35,7 @@ def login():
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
         password = request.form['password']
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor = mysql.connection.cursor()
         cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
         account = cursor.fetchone()
         if account:
@@ -45,6 +45,7 @@ def login():
             return redirect(url_for('home'))
         else:
             msg = 'You have enter the wrong username/password!'
+	cursor.close()
     return render_template('index.html', msg=msg)
 
 @app.route('/pythonlogin/logout')
@@ -64,7 +65,7 @@ def register():
         fullname = request.form['fullname']
         age = request.form['age']
         phoneno = request.form['phoneno']
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor = mysql.connection.cursor()
         cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
         account = cursor.fetchone()
         if account:
@@ -79,6 +80,7 @@ def register():
             cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s, %s)', (username, password, email, fullname, age, phoneno,))
             mysql.connection.commit()
             msg = 'You have successfully registered!'
+	cursor.close()
     elif request.method == 'POST':
         msg = 'Please fill out the form!'
     return render_template('register.html', msg=msg)
