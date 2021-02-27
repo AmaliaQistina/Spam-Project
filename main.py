@@ -19,6 +19,62 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+def init_connection_engine():
+    db_config = {
+        "pool_size": 5,
+        "max_overflow": 2,
+        "pool_timeout": 30,
+        "pool_recycle": 1800,
+    }
+
+if os.environ.get("localhost"):
+    return init_tcp_connection_engine(db_config)
+else:
+    return init_unix_connection_engine(db_config)
+
+def init_tcp_connection_engine(db_config):
+    db_user = os.environ["root"]
+    db_password = os.environ[""]
+    db_name = os.environ["pythonlogin"]
+    db_host = os.environ["localhost"]
+
+    host_args = db_host.split(":")
+    db_hostname, db_port = host_args[0], int(host_args[1])
+
+    pool = sqlalchemy.create_engine(
+        sqlalchemy.engine.url.URL(
+            drivername="//root:@/pythonlogin?unix_socket=<socket_path>/spam-checker-project",
+            username="root",
+            password="",
+            host="localhost",
+            port="5000",
+            database="pythonlogin",
+        ),
+        **db_config
+    )
+
+def init_unix_connection_engine(db_config):
+    db_user = os.environ["root"]
+    db_password = os.environ[""]
+    db_name = os.environ["pythonlogin"]
+    db_socket_dir = os.environ.get("/cloudsql")
+    cloud_sql_connection_name = os.environ["spamchecker:asia-southeast1:spam-checker-project"]
+
+    pool = sqlalchemy.create_engine(
+        sqlalchemy.engine.url.URL(
+           drivername="//root:@/pythonlogin?unix_socket=<socket_path>/spam-checker-project",
+            username="root",
+            password="",
+            database="pythonlogin",
+            query={
+                "unix_socket": "{}/{}".format(
+                    "/cloudsql",
+                    "spamchecker:asia-southeast1:spam-checker-project")
+            }
+        ),
+        **db_config
+)
+return pool
 
 # for login
 app.secret_key = 'spamfilter'
