@@ -1,7 +1,19 @@
 runtime: python39
+env: standard
+
+runtime_config:
+    python_version: 3
+
+entrypoint: gunicorn -b :$PORT main:app
 
 env_variables:
   CLOUD_SQL_USERNAME: root
   CLOUD_SQL_PASSWORD: 
   CLOUD_SQL_DATABASE_NAME: pythonlogin
-  CLOUD_SQL_CONNECTION_NAME: enhanced-skill-303607:asia-southeast1:spamchecker
+  CLOUD_SQL_CONNECTION_NAME: spamchecker:asia-southeast1:spam-checker-project
+
+network:
+  session_affinity: true
+
+manual_scaling:
+  instances: 2

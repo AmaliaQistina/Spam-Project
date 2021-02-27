@@ -8,7 +8,9 @@ import re
 from werkzeug.debug import DebuggedApplication
 import io
 from http.client import IncompleteRead
-import pymysql
+import os
+from importlib import reload
+import MySQLdb
 
 app = Flask(__name__)
 
@@ -17,28 +19,14 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-# Google cloud sql
-PASSWORD = ""
-PUBLIC_IP_ADDRESS = "35.187.234.219"
-DBNAME = "pythonlogin"
-PROJECT_ID = "enhanced-skill-303607"
-INSTANCE_NAME = "spamchecker"
-
-db_user = os.environ.get('root')
-db_password = os.environ.get('')
-db_name = os.environ.get('pythonlogin')
-db_connection_name = os.environ.get('enhanced-skill-303607:asia-southeast1:spamchecker')
 
 # for login
 app.secret_key = 'spamfilter'
 
-app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'pythonlogin'
-app.config["SQLALCHEMY_DATABASE_URI"]= f"mysql + mysqldb://root:{}@{35.187.234.219}/{pythonlogin}?unix_socket =/cloudsql/{enhanced-skill-303607}:{spamchecker}"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= True
-
 
 mysql = MySQL(app)
 
