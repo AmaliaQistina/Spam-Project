@@ -11,6 +11,8 @@ from http.client import IncompleteRead
 import os
 from importlib import reload
 import MySQLdb
+from getpass import getpass
+from mysql.connector import connect, Error
 
 app = Flask(__name__)
 
@@ -19,62 +21,40 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-def init_connection_engine():
-    db_config = {
-        "pool_size": 5,
-        "max_overflow": 2,
-        "pool_timeout": 30,
-        "pool_recycle": 1800,
-    }
+# Google cloud sql
+PASSWORD = ""
+PUBLIC_IP_ADDRESS = "35.187.250.76"
+DBNAME = "pythonlogin"
+PROJECT_ID = "spamchecker"
+INSTANCE_NAME = "spam-checker-project"
+CONNECTION_NAME = "spamchecker:asia-southeast1:spam-checker-project"
 
-if os.environ.get("localhost"):
-    return init_tcp_connection_engine(db_config)
+db_user = os.environ.get('root')
+db_password = os.environ.get('')
+db_name = os.environ.get('pythonlogin')
+db_connection_name = os.environ.get('spamchecker:asia-southeast1:spam-checker-project')
+
+SECRET_KEY = 'spamfilter'
+DATA_BACKEND = 'cloudsql'
+PROJECT_ID = 'spamchecker'
+CLOUDSQL_USER = 'root'
+CLOUDSQL_PASSWORD = ''
+CLOUDSQL_DATABASE = 'pythonlogin'
+CLOUDSQL_CONNECTION_NAME = 'spamchecker:asia-southeast1:spam-checker-project'
+
+LOCAL_SQLALCHEMY_DATABASE_URI = (
+	'mysql+pymysql://{user}:{password}@localhost/{database}').format(
+		user=CLOUDSQL_USER, password=CLOUDSQL_PASSWORD, database=CLOUDSQL_DATABASE)
+
+LIVE_SQLALCHEMY_DATABASE_URI = (
+	'mysql+pymysql://{user}:{password}@localhost/{database}'
+	'?unix_socket=/cloudsql/{connection_name}').format(
+		user=CLOUDSQL_USER, password=CLOUDSQL_PASSWORD, database=CLOUDSQL_DATABASE, connection_name=CLOUDSQL_CONNECTION_NAME)	
+
+if os.environ.get('GAE_APPENGINE_HOSTNAME'):
+	SQLALCHEMY_DATABASE_URI = LIVE_SQLALCHEMY_DATABASE_URI
 else:
-    return init_unix_connection_engine(db_config)
-
-def init_tcp_connection_engine(db_config):
-    db_user = os.environ["root"]
-    db_password = os.environ[""]
-    db_name = os.environ["pythonlogin"]
-    db_host = os.environ["localhost"]
-
-    host_args = db_host.split(":")
-    db_hostname, db_port = host_args[0], int(host_args[1])
-
-    pool = sqlalchemy.create_engine(
-        sqlalchemy.engine.url.URL(
-            drivername="mysql+pymysql",
-            username="root",
-            password="",
-            host="localhost",
-            port="5000",
-            database="pythonlogin",
-        ),
-        **db_config
-    )
-
-def init_unix_connection_engine(db_config):
-    db_user = os.environ["root"]
-    db_password = os.environ[""]
-    db_name = os.environ["pythonlogin"]
-    db_socket_dir = os.environ.get("/cloudsql")
-    cloud_sql_connection_name = os.environ["spamchecker:asia-southeast1:spam-checker-project"]
-
-    pool = sqlalchemy.create_engine(
-        sqlalchemy.engine.url.URL(
-           drivername="mysql+pymysql",
-            username="root",
-            password="",
-            database="pythonlogin",
-            query={
-                "unix_socket": "{}/{}".format(
-                    "/cloudsql",
-                    "spamchecker:asia-southeast1:spam-checker-project")
-            }
-        ),
-        **db_config
-)
-return pool
+	SQLALCHEMY_DATABASE_URI = LIVE_SQLALCHEMY_DATABASE_URI
 
 # for login
 app.secret_key = 'spamfilter'
