@@ -13,8 +13,7 @@ from importlib import reload
 import MySQLdb
 from getpass import getpass
 from mysql.connector import connect, Error
-import pymysql
-import mysql
+
 
 app = Flask(__name__)
 
