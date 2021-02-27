@@ -43,7 +43,7 @@ def init_tcp_connection_engine(db_config):
 
     pool = sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
-            drivername="//root:@/pythonlogin?unix_socket=<socket_path>/spam-checker-project",
+            drivername="mysql+pymysql",
             username="root",
             password="",
             host="localhost",
@@ -62,7 +62,7 @@ def init_unix_connection_engine(db_config):
 
     pool = sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
-           drivername="//root:@/pythonlogin?unix_socket=<socket_path>/spam-checker-project",
+           drivername="mysql+pymysql",
             username="root",
             password="",
             database="pythonlogin",
