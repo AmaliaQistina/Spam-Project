@@ -19,13 +19,14 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-MYSQL_UNIX_SOCKET: '/cloudsql/spam-checker-fyp-1120:asia-southeast1:spam-checker'
-MYSQL_USER: 'root'
-MYSQL_PASSWORD: ''
-MYSQL_DB: 'pythonlogin'
-MYSQL_CURSORCLASS: 'DictCursor'
-MYSQL_HOST: '35.187.233.82'
-	
+app.secret_key = 'spamfilter'
+
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'pythonlogin'
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
 mysql = MySQL(app)
 
 # http://localhost:5000/pythonlogin/
